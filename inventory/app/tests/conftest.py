@@ -5,9 +5,7 @@ from fastapi.testclient import TestClient
 from app.core.config import settings
 from app.main import app
 
-
 engine = create_engine(settings.TEST_DATABASE_URL, echo=True)
-
 
 SQLModel.metadata.create_all(engine)
 
