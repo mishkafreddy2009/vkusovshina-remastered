@@ -48,14 +48,18 @@ def create_product(storage_id: int, product_in: ProductIn, session: Session = De
             status_code=status.HTTP_404_NOT_FOUND,
             detail="storage with given id not found"
         )
+    if product_in.quantity + storage_obj.capacity > storage_obj.capacity:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="storage is full")
     try:
+        storage_obj.current_stock += product_in.quantity
         product_obj = Product(**product_in.model_dump(), storage_id=storage_id)
         session.add(product_obj)
+        session.add(storage_obj)
         session.commit()
         session.refresh(product_obj)
     except IntegrityError as e:
         session.rollback()
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="product with given data already exists") from e
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="product with given data already exists")
     except Exception as e:
         session.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="unexpected error occured while creating product")
