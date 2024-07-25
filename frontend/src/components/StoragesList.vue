@@ -1,13 +1,33 @@
 <template>
     <section class="storages">
+        <div class="headers">
+            <p>айди</p>
+            <p>название</p>
+            <p>заполнен</p>
+            <p>вместимость</p>
+            <p>текущая заполненность</p>
+        </div>
         <div class="storage" v-for="storage in storages" v-bind:key="storage.id">
-            <a :href="`dasboard/${storage.name}`" class="storage__title">{{ storage.name }}</a>
-            <div class="storage__infos">
-                <div class="storage__info">
-                    <p class="info__title">вместимость</p>
-                    <p>{{ storage.capacity }}</p>
-                </div>
-            </div>
+            <p>{{ storage.id }}</p>
+            <a :href="`storages/${storage.name}`" class="storage__title">{{ storage.name }}</a>
+            <p v-if="storage.is_full">да</p>
+            <p v-else>нет</p>
+            <p>{{ storage.capacity }}</p>
+            <p>{{ storage.current_stock }}</p>
+            <!-- <div class="storage__infos"> -->
+            <!--     <div class="storage__info"> -->
+            <!--         <p class="info__title">вместимость</p> -->
+            <!--         <p>{{ storage.capacity }}</p> -->
+            <!--     </div> -->
+            <!--     <div class="storage__info"> -->
+            <!--         <p class="info__title">текущая заполненность</p> -->
+            <!--         <p>{{ storage.current_stock }}</p> -->
+            <!--     </div> -->
+            <!--     <div class="storage__info"> -->
+            <!--         <p class="info__title">заполнен</p> -->
+            <!--         <p>{{ storage.is_full }}</p> -->
+            <!--     </div> -->
+            <!-- </div> -->
         </div>
     </section>
 </template>
@@ -29,6 +49,7 @@ export default {
         axios.get("api/storages/")
             .then(response => {
                 this.storages = response.data;
+                console.log(response.data[0].is_full);
             })
             .catch(error => {
                 console.error(error);
@@ -38,38 +59,22 @@ export default {
 </script>
 
 <style scoped>
-.storages {
-    display: flex;
-    gap: 2rem;
+a {
+    border-bottom: 1px solid #555;
+    max-width: fit-content;
+}
+.headers {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 2rem 0;
 }
 
 .storage {
-    min-width: 300px;
-    border: 1px solid #19a219;
-    border-radius: 1rem;
-    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr)
 }
 
-.storage .storage__title {
-    font-size: 1.375rem;
-    font-weight: 700;
-}
-
-
-.storage .storage__infos {
-    margin: 1rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.storage__infos .storage__info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.storage__info .info__title {
-    font-weight: 700;
+.storage + .storage {
+    margin: 0.5rem 0;
 }
 </style>

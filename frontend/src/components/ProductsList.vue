@@ -1,6 +1,5 @@
 <template>
     <section class="products">
-        
         <div v-for="product in products" v-bind:key="product.id">
             <div class="card">
                 <div class="card__description">
