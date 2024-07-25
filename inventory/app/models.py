@@ -1,15 +1,22 @@
 from sqlmodel import Field, Relationship, SQLModel
+from pydantic import computed_field
 
 
 class StorageBase(SQLModel):
     name: str
     capacity: int
+    current_stock: int
 
 
 class Storage(StorageBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
     products: list["Product"] = Relationship(back_populates="storage")
+
+    @computed_field
+    @property
+    def is_full(self) -> bool:
+        return True if self.capacity <= self.current_stock else False
 
 
 class StorageIn(StorageBase):
@@ -19,6 +26,7 @@ class StorageIn(StorageBase):
 class ProductBase(SQLModel):
     name: str
     quantity: int
+    price: float
 
 
 class Product(ProductBase, table=True):
