@@ -1,9 +1,11 @@
 FROM node:lts-alpine
 
-WORKDIR /app
+WORKDIR /app/
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json .
-COPY package-lock.json .
+COPY package.json /app/
+
+COPY package-lock.json /app/
+
 RUN npm install

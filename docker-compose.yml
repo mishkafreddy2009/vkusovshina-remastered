@@ -1,16 +1,43 @@
 services:
+  db:
+    image: postgres:12
+    restart: always
+    volumes:
+      - app-db-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
+      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
+      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+
   inventory:
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     build: inventory/
     command: uvicorn app.main:app --reload --host 0.0.0.0
     volumes:
       - ./inventory:/app
     ports:
       - 8001:8000
+
   frontend:
     build: frontend/
-    command: npm run dev -- -o
+    command: npm run serve
     volumes:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - 8080:3000
+      - 8080:8080
+
+volumes:
+  app-db-data:

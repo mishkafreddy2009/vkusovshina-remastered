@@ -3,6 +3,7 @@ from typing import Literal
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
 from app.core.db import init_db
@@ -19,12 +20,13 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title=settings.TITLE, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["localhost:8080", "localhost:3000"],
+    allow_origins=["http://127.0.0.1:8080", "http://localhost:8080"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
 )
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 @app.get("/")
