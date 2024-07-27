@@ -3,13 +3,15 @@
         <div class="headers">
             <p>айди</p>
             <p>название</p>
+            <p>описание</p>
             <p>заполнен</p>
             <p>вместимость</p>
             <p>текущая заполненность</p>
         </div>
         <div class="storage" v-for="storage in storages" v-bind:key="storage.id">
             <p>{{ storage.id }}</p>
-            <a :href="`storages/${storage.name}`" class="storage__title">{{ storage.name }}</a>
+            <a :href="`storages/${storage.id}`" class="storage__title">{{ storage.name }}</a>
+            <p>{{ storage.description }}</p>
             <p v-if="storage.is_full">да</p>
             <p v-else>нет</p>
             <p>{{ storage.capacity }}</p>
@@ -65,13 +67,13 @@ a {
 }
 .headers {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     margin: 2rem 0;
 }
 
 .storage {
     display: grid;
-    grid-template-columns: repeat(5, 1fr)
+    grid-template-columns: repeat(6, 1fr)
 }
 
 .storage + .storage {

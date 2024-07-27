@@ -1,22 +1,30 @@
 <template>
     <section class="storage-create">
         <button class="button add-button" @click="showForm = true">добавить склад</button>
-            <form class="create-form" v-if="showForm" @submit.prevent="createStorage">
-                <div class="create-form__item">
-                    <label for="title">название</label>
-                    <input type="text" name="title" v-model="title">
+            <form class="form" v-if="showForm" @submit.prevent="createStorage">
+                <div class="form__item">
+                    <label for="name">название</label>
+                    <input type="text" name="name" v-model="name">
                 </div>
-                <div class="create-form__item">
+                <div class="form__item">
+                    <label for="description">описание</label>
+                    <input type="text" name="description" v-model="description">
+                </div>
+                <div class="form__item">
                     <label for="address">адрес</label>
                     <input type="text" name="address" v-model="address">
                 </div>
-                <div class="create-form__item">
-                    <label for="phone">номер телефона</label>
-                    <input type="text" name="phone" v-model="phone_number">
+                <div class="form__item">
+                    <label for="phone-number">номер телефона</label>
+                    <input type="text" name="phone-number" v-model="phone_number">
                 </div>
-                <div class="create-form__item">
+                <div class="form__item">
                     <label for="capacity">вместимость</label>
                     <input type="text" name="capacity" v-model="capacity">
+                </div>
+                <div class="form__item">
+                    <label for="current-stock">текущая заполненность</label>
+                    <input type="text" name="current-stock" v-model="current_stoc">
                 </div>
                 <div class="buttons">
                     <button class="button" type="submit">добавить</button>
@@ -33,28 +41,28 @@ export default {
     data() {
         return {
             showForm: false,
-            title: "",
+            name: "",
+            description: "",
             address: "",
             phone_number: "",
             capacity: 0,
             current_stock: 0,
-            is_full: 0,
         };
     },
     methods: {
         async createStorage() {
             try {
-                const response = await axios.post("/api/v1/storages/", {
-                    title: this.title,
+                const response = await axios.post("/api/storages/", {
+                    name: this.name,
+                    description: this.description,
                     address: this.address,
                     phone_number: this.phone_number,
                     capacity: this.capacity,
                     current_stock: this.current_stock,
-                    is_full: this.is_full
                 })
                 console.log("storage created:", response.data)
                 this.showForm = false
-                this.title = ""
+                this.name = ""
             } catch (error) {
                 console.error("error:", error.response.data)
             }
@@ -64,28 +72,4 @@ export default {
 </script>
 
 <style scoped>
-.storage-create {
-    margin: 1rem 0;
-}
-
-.create-form .create-form__item {
-    display: flex;
-    max-width: 200px;
-    flex-direction: column;
-}
-
-.create-form .create-form__item + .create-form__item {
-    margin-top: 1rem;
-}
-
-.create-form__item input {
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #19a219;
-}
-
-.buttons {
-    display: flex;
-    gap: 0.5rem;
-}
 </style>

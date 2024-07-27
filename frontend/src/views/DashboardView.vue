@@ -1,18 +1,20 @@
 <template>
     <div class="dashboard">
-        <!-- <StorageCreateView /> -->
+        <StorageCreate />
         <StoragesList />
     </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import StoragesList from '@/components/StoragesList.vue'
+import StorageCreate from "@/components/StorageCreate.vue"
+import StoragesList from "@/components/StoragesList.vue"
 
 export default {
-  name: 'DashboardView',
+  name: "DashboardView",
   components: {
       StoragesList,
+      StorageCreate,
   }
 }
 </script>
