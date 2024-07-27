@@ -17,7 +17,6 @@ class Storage(StorageBase, table=True):
     products: list["Product"] = Relationship(back_populates="storage")
 
     @computed_field
-    @property
     def is_full(self) -> bool:
         return True if self.capacity <= self.current_stock else False
 
