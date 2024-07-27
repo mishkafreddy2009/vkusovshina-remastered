@@ -2,6 +2,7 @@ import os
 from dataclasses import dataclass
 from typing import Literal
 
+
 @dataclass
 class Settings:
     TITLE: str = "vkusovshina"
