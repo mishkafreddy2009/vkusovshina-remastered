@@ -18,14 +18,15 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title=settings.TITLE, lifespan=lifespan)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://127.0.0.1:8080", "http://localhost:8080"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],
-)
+if settings.BACKEND_CORS_ORIGINS:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://127.0.0.1:8080", "http://localhost:8080"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=["*"],
+    )
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 

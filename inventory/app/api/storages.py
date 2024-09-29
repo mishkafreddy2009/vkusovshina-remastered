@@ -41,7 +41,7 @@ def create_storage(
     return db_storage
 
 
-@router.get("/{storage_id}/products")
+@router.get("/{storage_id}/products/")
 def read_storage_products(storage_id: int, session: Session = Depends(get_session)):
     storage = session.get(Storage, storage_id)
     if not storage:

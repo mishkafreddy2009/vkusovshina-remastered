@@ -92,7 +92,7 @@ def create_product(
     return product_obj
 
 
-@router.post("/{product_id}/image")
+@router.post("/{product_id}/image/")
 def create_product_image(
     product_id: int,
     file_in: UploadFile = File(...),
@@ -122,7 +122,7 @@ def create_product_image(
     return "bebra"
 
 
-@router.get("/{product_id}/image")
+@router.get("/{product_id}/image/")
 def read_product_images(product_id: int, session: Session = Depends(get_session)):
     product_image = session.exec(
         select(ProductImage).where(ProductImage.product_id == product_id)
